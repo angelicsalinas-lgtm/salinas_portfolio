@@ -10,9 +10,10 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! I\'ll get back to you soon.')
+    // Send email to angelickaye9@gmail.com
+    const mailtoLink = `mailto:angelickaye9@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
+    window.location.href = mailtoLink
+    alert('Thank you for your message! Your email client will open shortly.')
     setFormData({ name: '', email: '', message: '' })
   }
 
