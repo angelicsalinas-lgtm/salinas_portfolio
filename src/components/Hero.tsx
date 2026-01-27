@@ -30,12 +30,14 @@ export default function Hero() {
         </div>
         
         <div className={styles.visual}>
-          <div className={styles.artworkFrame}>
-            <div className={styles.artwork}>
-              <div className={styles.artElement1}></div>
-              <div className={styles.artElement2}></div>
-              <div className={styles.artElement3}></div>
-              <div className={styles.artElement4}></div>
+          <div className={styles.hexagonWrapper}>
+            <div className={styles.hexagonGlow}></div>
+            <div className={styles.hexagonFrame}>
+              <img 
+                src="/profile.jpg" 
+                alt="Profile photo" 
+                className={styles.profileImage}
+              />
             </div>
           </div>
         </div>
