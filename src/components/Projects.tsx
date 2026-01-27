@@ -56,13 +56,7 @@ export default function Projects() {
               </div>
               
               <div className={styles.cardVisual}>
-                <div className={styles.photoFrame}>
-                  <img 
-                    src="/profile.jpg" 
-                    alt="Profile photo"
-                    className={styles.profilePhoto}
-                  />
-                </div>
+                <span className={styles.emoji}>{project.image}</span>
               </div>
               
               <div className={styles.cardContent}>
