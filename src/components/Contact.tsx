@@ -7,14 +7,39 @@ export default function Contact() {
     email: '',
     message: ''
   })
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Send email to angelickaye9@gmail.com
-    const mailtoLink = `mailto:angelickaye9@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
-    window.location.href = mailtoLink
-    alert('Thank you for your message! Your email client will open shortly.')
-    setFormData({ name: '', email: '', message: '' })
+    setStatus('sending')
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '49a4ca15-a48e-444c-8b86-0e1a490ee6b4',
+          to_email: 'angelickaye9@gmail.com',
+          from_name: formData.name,
+          email: formData.email,
+          subject: `Portfolio Contact from ${formData.name}`,
+          message: formData.message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setStatus('success')
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -98,12 +123,18 @@ export default function Contact() {
                 required
               ></textarea>
             </div>
-            <button type="submit" className={styles.submitBtn}>
-              Send Message
+            <button type="submit" className={styles.submitBtn} disabled={status === 'sending'}>
+              {status === 'sending' ? 'Sending...' : 'Send Message'}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M14.5 1.5L7 9M14.5 1.5L10 14.5L7 9M14.5 1.5L1.5 6L7 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
+            {status === 'success' && (
+              <p className={styles.successMsg}>✓ Message sent! I&apos;ll get back to you soon.</p>
+            )}
+            {status === 'error' && (
+              <p className={styles.errorMsg}>Something went wrong. Please email me directly at angelickaye9@gmail.com</p>
+            )}
           </form>
         </div>
       </div>
